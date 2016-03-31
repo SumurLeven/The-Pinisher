@@ -1,4 +1,7 @@
-Copyright (c) 2015 Raul Rene Lepșa (raul.lepsa@gmail.com)
+The MIT License (MIT)
+
+Copyright for portions of Pi-nisher are held by Raul Rene Lepșa & Henry Henderson as part of Twitter-ContestJS-bot.
+All other copyright for The Pinisher are held by Adam Magnier, 2016.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

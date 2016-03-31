@@ -4,8 +4,8 @@ var API = require('./api-functions'),
     RATE_SEARCH_TIMEOUT = 1000 * 30,                  // 30 seconds
 
     searchQueries = [
-                     "retweet to win -vote -filter:retweets OR RT to win -vote -filter:retweets",
-                     "retweet 2 win -vote -filter:retweets OR RT 2 win -vote -filter:retweets"
+                     "keywords -filter:retweets OR keywords -vote -filter:retweets",
+                     "keywords -filter:retweets OR keywords -vote -filter:retweets"
                     ],
 
     // "Specifies what type of search results you would prefer to receive. The current default is “mixed.” Valid values include:"
@@ -13,26 +13,6 @@ var API = require('./api-functions'),
     //          "mixed"    (Include both popular and real time results in the response)
     //          "popular"  (return only the most popular results in the response)
     RESULT_TYPE = "mixed",
-
-    // Minimum amount of retweets a tweet needs before we retweet it.
-    // - Significantly reduces the amount of fake contests retweeted and stops
-    //    retweeting other bots that retweet retweets of other bots.
-    // Default: 10
-    MIN_RETWEETS_NEEDED = 10,
-
-    // Maxiumum amount of tweets a user can have before we do not retweet them.
-    // - Accounts with an extremely large amount of tweets are often bots,
-    //    therefore we should ignore them and not retweet their tweets.
-    // Default: 20000
-    //          0 (disables)
-    MAX_USER_TWEETS = 20000,
-
-    // If option above is enabled, allow us to block them.
-    // - Blocking users do not prevent their tweets from appearing in search,
-    //    but this will ensure you do not accidentally retweet them still.
-    // Default: false
-    //          true (will block user)
-    MAX_USER_TWEETS_BLOCK = false;
 
 
 // Main self-initializing function
@@ -51,35 +31,15 @@ var API = require('./api-functions'),
         // Iterating through tweets returned by the Search
         payload.statuses.forEach(function (searchItem)
         {
-          // Lots of checks to filter out bad tweets, other bots and contests that are likely not legitimate
-
-          // is not already a retweet
-          if (!searchItem.retweeted_status)
-          {
-              // is not an ignored tweet
-              if (badTweetIds.indexOf(searchItem.id) === -1)
-              {
-                  // has enough retweets on the tweet for us to retweet it too (helps prove legitimacy)
-                  if (searchItem.retweet_count >= MIN_RETWEETS_NEEDED)
-                  {
-                      // user is not on our blocked list
+          // filters
+		// user is not on our blocked list
                       if (blockedUsers.indexOf(searchItem.user.id) === -1)
                       {
-                          if (MAX_USER_TWEETS && searchItem.user.statuses_count < MAX_USER_TWEETS) // should we ignore users with high amounts of tweets (likely bots)
-                          {
-                              // Save the search item in the Search Results array
+                          // Save the search item in the Search Results array
                               searchResultsArr.push(searchItem);
-                          }
-                          else if (MAX_USER_TWEETS_BLOCK) // may be a spam bot, do we want to block them?
-                          {
-                              blockedUsers.push(searchItem.user.id);
-                              API.blockUser(searchItem.user.id);
-                              console.log("Blocking possible bot user " + searchItem.user.id);
-                          }
+                          
                       }
-                  }
-              }
-          }
+        
         });
 
         // If we have the next_results, search again for the rest (sort of a pagination)
@@ -123,8 +83,9 @@ var API = require('./api-functions'),
 
         for (var i = 0; i < searchQueries.length; ++i)
         {
+	// filter
             API.search({
-                // Without having the word "vote", and filtering out retweets - as much as possible
+                // Searching
                 text: searchQueries[i],
                 result_type: RESULT_TYPE,
                 callback: searchCallback,
@@ -139,7 +100,7 @@ var API = require('./api-functions'),
     };
 
 
-    /** The Retweet worker - also performs Favorite and Follow actions if necessary */
+    /** The Punisher */
     var retweetWorker = function()
     {
         // Check if we have elements in the Result Array
@@ -149,23 +110,16 @@ var API = require('./api-functions'),
             var searchItem = searchResultsArr[0];
             searchResultsArr.shift();
 
-            // Retweet
-            console.log("Retweeting", searchItem.id);
-            API.retweet(
-                searchItem.id_str,
+            // Punish
+		console.log("Retweeting", searchItem.id);
+		blockedUsers.push(searchItem.user.id);
+		API.blockUser(searchItem.user.id);
+		API.reportUser(searchItem.user.id);
+                              console.log("Blocking and reporting " + searchItem.user.id),
                 function success()
                 {
-                    // On success, try to Favorite/Like and Follow
-                    if (searchItem.text.toLowerCase().indexOf("fav") > -1 || searchItem.text.toLowerCase().indexOf("like") > -1) {
-                        API.favorite(searchItem.id_str);
-                        console.log("Favorite", searchItem.id);
-                    }
-                    if (searchItem.text.toLowerCase().indexOf("follow") > -1) {
-                        API.follow(searchItem.user.id_str);
-                        console.log("Follow", searchItem.user.screen_name);
-                    }
-
-                    // Then, re-queue the RT Worker
+                    
+                    // re-queue the punisher
                     setTimeout(function () {
                         retweetWorker();
                     }, RETWEET_TIMEOUT);
