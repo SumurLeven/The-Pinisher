@@ -3,9 +3,10 @@ var API = require('./api-functions'),
     RETWEET_TIMEOUT = 1000 * 15,                      // 15 seconds
     RATE_SEARCH_TIMEOUT = 1000 * 30,                  // 30 seconds
 
+// Keywords you want to search + filtering retweets
     searchQueries = [
-                     "keywords -filter:retweets OR keywords -vote -filter:retweets",
-                     "keywords -filter:retweets OR keywords -vote -filter:retweets"
+                     "keywords -filter:retweets OR keywords -filter:retweets",
+                     "keywords -filter:retweets OR keywords -filter:retweets"
                     ],
 
     // "Specifies what type of search results you would prefer to receive. The current default is “mixed.” Valid values include:"
@@ -111,7 +112,7 @@ var API = require('./api-functions'),
             searchResultsArr.shift();
 
             // Punish
-		console.log("Retweeting", searchItem.id);
+		console.log("Reporting & blocking ", searchItem.id);
 		blockedUsers.push(searchItem.user.id);
 		API.blockUser(searchItem.user.id);
 		API.reportUser(searchItem.user.id);
@@ -131,9 +132,9 @@ var API = require('./api-functions'),
                     if (errorCallback)
                         errorHandler(errorCallback);
 
-                    console.error("RT Failed for", searchItem.id, ". Likely has already been retweeted. Adding to blacklist.");
+                    console.error("Fail for", searchItem.id, ". Adding to blacklist.");
 
-                    // If the RT fails, blacklist it
+                    // If it fails, blacklist it
                     badTweetIds.push(searchItem.id);
 
                     // Then, re-start the RT Worker
@@ -181,7 +182,7 @@ var API = require('./api-functions'),
         // Start searching (the Search is in itself a worker, as the callback continues to fetch data)
         search();
 
-        // Start the Retweet worker after short grace period for search results to come in
+        // Start the worker after short grace period for search results to come in
         setTimeout(function () {
             retweetWorker();
         }, 8000);
