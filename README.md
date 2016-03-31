@@ -1,6 +1,7 @@
 # The Pinisher
 
 A Javascript bot A Javascript Twitter report bot
+
 Fork of [Twitter-ContestJS-bot](https://github.com/henhouse/Twitter-ContestJS-bot)
 
 ##Disclaimer
@@ -12,10 +13,11 @@ This bot is written purely for educational purposes. I hold no liability for wha
  * `git clone` the repository, or download the zip file and unzip it
  * `npm install` in the directory where you cloned the repository (this is needed for installing dependencies)
  * Edit the `config.js` file with your Twitter API Credentials
+ * Edit the index.js and change your keywords
  * run `node index.js`
 
 ## Dependencies
-It makes use of the <a href="https://github.com/request/request-promise"><b>reqyest-promise</b></a> library, a HTTP JS client.
+It makes use of the <a href="https://github.com/request/request-promise"><b>request-promise</b></a> library, a HTTP JS client.
 
 
 ## Licence
