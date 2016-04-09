@@ -1,7 +1,7 @@
 {
-  "name": "The Pinisher",
-  "description": "A Javascript Twitter report bot ",
-  "author": "Adam Magnier <adam@magnier.io>",
+  "name": "Twitter-ContestJS-bot",
+  "description": "A Javascript bot that searches recent tweets about contests (based on retweeting) and retweets them. ",
+  "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
   "dependencies": {
     "request-promise": "^0.4.3"
   }
