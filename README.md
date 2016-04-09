@@ -1,4 +1,4 @@
-[[https://framapic.org/u0HRqWK96Dup/F9BgiLaApcqS.jpg|alt=The-Pinisher]]
+![The-Pinisher](https://framapic.org/u0HRqWK96Dup/F9BgiLaApcqS.jpg "Optional title")
 
 # The Pinisher
 
