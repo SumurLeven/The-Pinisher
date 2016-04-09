@@ -1,6 +1,8 @@
+[[https://framapic.org/u0HRqWK96Dup/F9BgiLaApcqS.jpg|alt=The-Pinisher]]
+
 # The Pinisher
 
-A Javascript bot A Javascript Twitter report bot
+A Javascript Twitter report bot
 
 Fork of [Twitter-ContestJS-bot](https://github.com/henhouse/Twitter-ContestJS-bot)
 
