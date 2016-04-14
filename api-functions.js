@@ -133,13 +133,18 @@ var API = {
             });
     },
 
-    reportUser: function (userId) {
+    reportUser: function (userId, cb, errorHandler) {
         request.post({url: 'https://api.twitter.com/1.1/users/report_spam.json?user_id=' + userId, oauth: oauth})
-            .then(callbacks.default)
-            .catch(function (err) {
-                console.error(err.message);
-            });
-    },
+        .then(function() {
+            cb();
+        })
+        .catch(function(err) {
+            if (errorHandler)
+                errorHandler(err);
+            else
+                console.error("An error occurred:", err.message);
+        });
+},
 
     deleteTweet: function (tweetId) {
         request.post({url: 'https://api.twitter.com/1.1/statuses/destroy/' + tweetId + ".json", oauth: oauth})

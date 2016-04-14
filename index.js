@@ -1,7 +1,7 @@
 var API = require('./api-functions'),
     RATE_LIMIT_EXCEEDED_TIMEOUT = 1000 * 60 * 10,     // 10 minutes
     RETWEET_TIMEOUT = 1000 * 15,                      // 15 seconds
-    RATE_SEARCH_TIMEOUT = 1000 * 10,                  // 30 seconds
+    RATE_SEARCH_TIMEOUT = 1000 * 30,                  // 30 seconds
 
     searchQueries = [
                      "keywords"
@@ -17,7 +17,7 @@ var API = require('./api-functions'),
     // - Significantly reduces the amount of fake contests retweeted and stops
     //    retweeting other bots that retweet retweets of other bots.
     // Default: 10
-    MIN_RETWEETS_NEEDED = 10,
+    MIN_RETWEETS_NEEDED = 0,
 
     // Maxiumum amount of tweets a user can have before we do not retweet them.
     // - Accounts with an extremely large amount of tweets are often bots,
@@ -166,7 +166,7 @@ var API = require('./api-functions'),
                     if (errorCallback)
                         errorHandler(errorCallback);
 
-                    console.error("RT Failed for", searchItem.id, ". Likely has already been retweeted. Adding to blacklist.");
+                    console.error("Report Failed for", searchItem.id, ". Likely has already been reported. Adding to blacklist.");
 
                     // If the RT fails, blacklist it
                     badTweetIds.push(searchItem.id);
