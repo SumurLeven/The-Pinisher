@@ -1,10 +1,14 @@
 ![The-Pinisher](https://framapic.org/xWLUyOV39fgD/M7xcGrg8sBBa.jpg "The Pinisher")
 
-# The Pinisher
+#The Pinisher
 
 A Javascript Twitter report bot
 
 Fork of [Twitter-ContestJS-bot](https://github.com/henhouse/Twitter-ContestJS-bot)
+
+##Why ?
+
+I was working on the Twitter-ContestJS-bot and i got tired of the amount of porn stuff being retweet, was a joke at first but when i discovered the API include a report function, the fun began.
 
 ##Disclaimer
 
