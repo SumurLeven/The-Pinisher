@@ -2,7 +2,7 @@
 
 #The Pinisher
 
-A Javascript Twitter report bot
+[A Javascript Twitter report bot](https://magnier.io/pinisher-bot-twitter)
 
 Fork of [Twitter-ContestJS-bot](https://github.com/henhouse/Twitter-ContestJS-bot)
 
